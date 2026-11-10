@@ -1,0 +1,487 @@
+/* ==========================================================================
+   SMSH | Artisan Smashed Burgers — Core Stylesheet (Phase 1 & Phase 2)
+   Strictly locked to AGENT.md tokens, Modak + Mouse Memoirs, and strokes.
+   ========================================================================== */
+
+:root {
+  /* Strict 6-Token Brand Palette (Zero Deviation Allowed) */
+  --beige: #f5e3cd;
+  --red: #f91814;
+  --white: #ffffff;
+  --black: #1b1b1b;
+  --mustard: #ffd750;
+  --mustard-dark: #f4a804;
+
+  /* Strict Typography Variables */
+  --font-modak: 'Modak', cursive;
+  --font-mouse-memoirs: 'Mouse Memoirs', sans-serif;
+
+  /* Peelable Sticker Defaults */
+  --sticker-rotate: 30deg;
+  --sticker-p: 20%;
+  --sticker-shadow-opacity: 0.6;
+  --sticker-lighting-constant: 0.1;
+  --peel-direction: 0deg;
+  --peel-amount: 0;
+  --sticker-start: calc(-1 * var(--sticker-p));
+  --sticker-end: calc(100% + var(--sticker-p));
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: var(--beige);
+  color: var(--black);
+  font-family: var(--font-mouse-memoirs);
+  -webkit-user-select: none;
+  user-select: none;
+  overflow-x: hidden;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--red);
+  color: var(--beige);
+}
+
+/* ==========================================================================
+   Lenis Smooth Scroll Rules
+   ========================================================================== */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Layout & Fluid VW Typography Scale (Exact Match to Reference CSS)
+   ========================================================================== */
+.self {
+  padding: 8vw 2.5vw;
+}
+
+.heading600 {
+  font-family: var(--font-modak);
+  font-size: 35vw;
+}
+
+.heading300 {
+  font-family: var(--font-mouse-memoirs);
+  font-size: 15vw;
+}
+
+.heading180 {
+  text-transform: uppercase;
+  font-size: 9vw;
+  font-family: var(--font-mouse-memoirs);
+}
+
+.text96 {
+  font-size: 4vw;
+  line-height: 1;
+}
+
+.text60 {
+  font-size: 2.8vw;
+}
+
+.text40 {
+  font-size: 1.8vw;
+}
+
+/* ==========================================================================
+   Paint-Order Text Strokes
+   ========================================================================== */
+.text-stroke {
+  -webkit-text-stroke: 2.5vw var(--white);
+  paint-order: stroke fill;
+}
+
+.text-stroke-180 {
+  -webkit-text-stroke: 1vw var(--white);
+  paint-order: stroke fill;
+}
+
+.text-stroke-180-mustard {
+  -webkit-text-stroke: 1vw rgba(244, 168, 4, 0.3);
+  paint-order: stroke fill;
+}
+
+.text-stroke-small {
+  -webkit-text-stroke: 5px var(--white);
+  paint-order: stroke fill;
+}
+
+.text-stroke-180-menu {
+  -webkit-text-stroke: 1vw var(--white);
+  paint-order: stroke fill;
+}
+
+/* Tablet Breakpoint (768px – 1024px): Balanced intermediate scale so 768/820/1024 tablets never blow up desktop layouts */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .self {
+    padding: 10vw 3.2vw;
+  }
+  .text96 {
+    font-size: 4.8vw;
+  }
+  .text60 {
+    font-size: 3.4vw;
+  }
+  .text40 {
+    font-size: 2.2vw;
+  }
+  .heading180 {
+    font-size: 10.5vw;
+  }
+  .heading300 {
+    font-size: 16.5vw;
+  }
+}
+
+/* Mobile Breakpoint (<= 767px): Matches Tailwind max-md: 1:1 */
+@media (max-width: 767px) {
+  .self {
+    padding: 16vw 4vw;
+  }
+  .text96 {
+    font-size: 8vw;
+  }
+  .text60 {
+    font-size: 6.5vw;
+  }
+  .text40 {
+    font-size: 5vw;
+  }
+  .heading180 {
+    font-size: 14vw;
+  }
+  .heading300 {
+    font-size: 24vw;
+  }
+}
+
+/* ==========================================================================
+   Masked Line / Word Reveal & Pop Word Helpers
+   ========================================================================== */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.line-mask-inner {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.mask-overflow {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+[data-pop='true'] {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: 50% 80%;
+}
+
+[data-hero-step] {
+  transform-origin: 50% 55%;
+}
+
+.hero-gpu {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+[data-mask-reveal] {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Double-Layer Vertical Split Hover Text */
+.split-link {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.1;
+}
+
+.split-link > span {
+  display: block;
+  transition: transform 0.36s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+
+.split-link > span:first-child {
+  transform: translate3d(0, 0%, 0);
+}
+
+.split-link > span:last-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(0, 108%, 0);
+}
+
+.group:hover .split-link > span:first-child,
+.split-link:hover > span:first-child {
+  transform: translate3d(0, -108%, 0);
+}
+
+.group:hover .split-link > span:last-child,
+.split-link:hover > span:last-child {
+  transform: translate3d(0, 0%, 0);
+}
+
+/* Organic Blob CTA Button Hover */
+[data-anm-btn='btn']:hover [data-anm-btn='path'] {
+  fill: var(--black);
+}
+
+[data-anm-btn='btn']:hover [data-anm-btn='text'] {
+  color: var(--white);
+}
+
+/* ==========================================================================
+   Interactive Peelable Die-Cut Sticker System
+   ========================================================================== */
+.sticker-container {
+  --sticker-peel-y: calc(
+    var(--sticker-start) + var(--peel-amount) * (var(--sticker-end) - var(--sticker-start))
+  );
+  transform: rotate(var(--peel-direction));
+  transform-origin: 50%;
+  position: relative;
+  cursor: pointer;
+}
+
+.sticker-container * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sticker-main {
+  clip-path: polygon(
+    var(--sticker-start) var(--sticker-peel-y),
+    var(--sticker-end) var(--sticker-peel-y),
+    var(--sticker-end) var(--sticker-end),
+    var(--sticker-start) var(--sticker-end)
+  );
+  will-change: clip-path;
+  filter: url(#dropShadow);
+}
+
+.sticker-main > * {
+  transform: rotate(calc(-1 * var(--peel-direction)));
+}
+
+.sticker-lighting {
+  filter: url(#pointLight);
+}
+
+.sticker-image {
+  transform: rotate(var(--sticker-rotate));
+  width: var(--sticker-width, 100%);
+  display: block;
+}
+
+.flap {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(
+    var(--sticker-start) var(--sticker-start),
+    var(--sticker-end) var(--sticker-start),
+    var(--sticker-end) var(--sticker-peel-y),
+    var(--sticker-start) var(--sticker-peel-y)
+  );
+  left: 0;
+  top: calc(-100% + 2 * var(--sticker-peel-y) - 1px);
+  will-change: clip-path, top;
+  position: absolute;
+  transform: scaleY(-1);
+  pointer-events: none;
+}
+
+.flap > * {
+  transform: rotate(calc(-1 * var(--peel-direction)));
+}
+
+.flap-lighting {
+  filter: url(#pointLightFlipped);
+}
+
+.flap-image {
+  transform: rotate(var(--sticker-rotate));
+  filter: url(#expandAndFill);
+  width: var(--sticker-width, 100%);
+  display: block;
+}
+
+.simple-effects .sticker-main {
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.35));
+}
+
+.simple-effects .sticker-lighting,
+.simple-effects .flap-lighting {
+  filter: none;
+}
+
+.simple-effects .flap {
+  display: none;
+}
+
+/* ==========================================================================
+   Experience Cartoon Eyes & Footer Juggling Responsive Helpers
+   ========================================================================== */
+.exp-eye-sclera {
+  width: 6vw;
+  height: 9vw;
+  border-radius: 50% / 60%;
+}
+
+.exp-eye-rotor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 2.2vw;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: 50% 50%;
+}
+
+.exp-eye-pupil {
+  width: 2.2vw;
+  height: 3vw;
+  border-radius: 50% / 55%;
+}
+
+@media (max-width: 767px) {
+  .exp-eye-sclera {
+    width: 7.5vw;
+    height: 11.2vw;
+  }
+  .exp-eye-rotor {
+    height: 2.8vw;
+  }
+  .exp-eye-pupil {
+    width: 2.8vw;
+    height: 3.8vw;
+  }
+}
+
+/* ==========================================================================
+   Menu Cards, Contact Form & Cart UX
+   ========================================================================== */
+.menu-card {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+
+.menu-card:hover {
+  transform: translateY(-0.4vw);
+  box-shadow: 0 1.4vw 3vw rgba(27, 27, 27, 0.14);
+}
+
+.menu-card:hover .menu-checker-band {
+  transform: translateY(-50%) scaleY(1.1);
+}
+
+.menu-card:hover .menu-checker-red {
+  background-color: var(--mustard);
+}
+
+.menu-card:hover .menu-burger-img {
+  transform: scale(1.07) rotate(-2deg);
+}
+
+@keyframes smshCartRing {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+.cart-pulse-ring {
+  animation: smshCartRing 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.contact-topic-btn[data-active='true'] {
+  background-color: var(--mustard);
+  color: var(--black);
+  border-color: var(--mustard);
+}
+
+.flavor-filter-btn[data-active='true'] {
+  background-color: var(--red);
+  color: var(--beige);
+  border-color: var(--red);
+  transform: translateY(-2px);
+}
+
+.flavor-dip-card:hover .flavor-dip-img {
+  transform: scale(1.1) rotate(8deg);
+}
+
+@keyframes smshShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: smshShake 0.42s ease-in-out;
+}
+
+/* ==========================================================================
+   Disable Custom Trail Cursor on Touch / Coarse Pointers
+   ========================================================================== */
+@media (pointer: coarse) {
+  #ingredient-cursor-trail {
+    display: none !important;
+  }
+}
