@@ -1,16 +1,14 @@
 # INSTRUCTION.md — Phased Plan & Live Session Handoff Tracker
 
 ## 1. Current Session Handoff Banner
-- **Current Phase:** **Exact `cravburgers.shop` (`Module 82148`) `Craving...` Page Transition, No-Red-Line Flight Map, Clean About-to-Experience Curve Separation & Restored Flagship Cards Complete**
+- **Current Phase:** **Session 28 Complete — Full-Site Multi-Page QA & Final Large-Asset WebP Optimization (`1920x1080`, `1440x900`, `390x844`)**
 - **Brand Identity:** **SMSH** (Multi-page Vanilla HTML architecture matching `cravburgers.shop` theme, colors, fonts, and GSAP animations)
 - **Tech Stack Locked:** Pure Vanilla HTML (`index.html`, `menu.html`, `spices.html`, `contact.html`) + Tailwind CSS CDN + Custom CSS (`css/styles.css`) + **Barba.js (`@barba/core@2.10.3`) CDN** + GSAP CDN (`gsap`, `ScrollTrigger`, `MotionPathPlugin`) + Lenis CDN + Vanilla JS (`js/app.js`)
-- **Last Completed Task:** Addressed all 4 visual & transition refinements cleanly:
-  1. **Zero Red Line on Map & Cache-Free Preview (`serve.mjs` + `index.html`):** Confirmed zero `#map-flight-path-active` red stroke exists, matched `#map-flight-path` 1:1 (`stroke="#F4A804" stroke-opacity="0.5" stroke-dasharray="42 42"`), and added `Cache-Control: no-store` headers in `serve.mjs` (restarted on `http://127.0.0.1:5500`) so browsers never display stale cached red lines.
-  2. **Clean Beige Gap Between `#about` Cards & Softer `#experience` Red Curve (`index.html` + `js/app.js`):** Restored `#about` bottom spacing (`py-[6vw]`), increased `#about-media-stage` bottom clearance (`pb-[9vw] max-md:pb-[15vw]`), adjusted `#experience` (`-mt-[9vw] max-md:-mt-[6vw]`), and added `data-jelly-soft="true"` (`h-[210px] max-md:h-[95px]`, `scaleY: 1.18`) so the red `.jelly` curve never touches the 3 fanned photo cards and bends gently like the original site.
-  3. **Restored Clean, Attractive Flagship Menu Cards (`index.html` & `menu.html`):** Restored generous `h-[35vw] max-lg:h-[49vw] max-md:h-[78vw]` white cards with full `6vw` checkerboard band, clean `size-[21vw]` hero burger cutouts, crisp red `.text60` titles + `.text60` prices, frosted desktop hover `Quick details` cards, and the parabolic fly-to-cart Add UX.
-  4. **Exact 1:1 `cravburgers.shop` (`Module 82148`) Page Transition (`index.html`, `menu.html`, `spices.html`, `contact.html`, `js/app.js`):** Matched `Module 82148` byte-for-byte — `playLiquidCoverIn()` (`0.65s` `power2.out` center / `0.85s` `power3.inOut` edges from `101 -> -1`, `0.1s` stagger, `Craving...` `#4C0016` `Modak` popping in at `'-=0.4'` with `back.out(2)`) flowing seamlessly into `playLiquidRevealOut()` (`0.75s` `power2.inOut` / `1.05s` `power4.inOut`, `0.1s` stagger, `Craving...` scaling `1 -> 1.3` out).
-- **Next Immediate Task:** Ready for any further refinements, additional items, or deployment requested by the user.
-- **Known Issues / Blockers:** None. Browser-verified in Playwright (`overflowX: false`, `0` console errors); local no-cache server running on `http://127.0.0.1:5500`.
+- **Last Completed Task:** Completed end-to-end QA across all 4 pages, animations, Barba transitions, interactive widgets, and responsive breakpoints, and eliminated remaining first-decode mobile/subpage hitches:
+  1. **Converted Remaining Heavy Sticker & Plane PNGs (`assets/img-webp/`):** Downsampled `burgerselfie.png` (`2.6 MB` -> `129.5 KB`), `burger-boy.png` (`1.7 MB` -> `271.0 KB`), and `plane.png` (`804 KB` -> `135.3 KB`) to crisp RGBA `.webp`s (`index.html`, `menu.html`, `spices.html`, `contact.html`) and aligned `<link rel="preload">` tags per subpage.
+  2. **Zero-Error Multi-Page Animation & Interactive Audit:** Verified `0` duplicate HTML attributes or missing asset links, hero pops, googly eye tracking, ingredients parallax, `#flavors` filter counts, fly-to-cart + checkout flow, `#map-desktop` & `#map-mobile` planes/cards, `#footer` juggling cutouts, `spices.html` spice runners (`16.6ms` avg), `contact.html` form validation/submit/reset (`16.6ms` avg), Barba hash navigation (`./index.html#about`), same-page liquid transition (`./index.html#flavors`), and smooth scrolling at `1920x1080` (`17ms` avg), `1440x900` (`16.9ms` avg), and `390x844` (`17.7ms` avg).
+- **Next Immediate Task:** Ready for deployment or any further user requests.
+- **Known Issues / Blockers:** None (`overflowX: false` across all tested breakpoints/pages, `0` broken images, `0` console errors; temporary `.playwright-mcp` folder removed).
 
 ---
 
@@ -190,3 +188,69 @@
   - **Restored Flagship Clean Menu Cards:** Upgraded `#flavors-cards-grid` & `#menu-cards-grid` back to the tall `h-[35vw]` white cards with full `6vw` checkerboard strip, `size-[21vw]` centered burger cutouts, bold `.text60` titles/prices, frosted hover `Quick details`, and full fly-to-cart UX.
   - **Exact `Module 82148` Transition (`Craving...`):** Matched `https://www.cravburgers.shop`'s transition 1:1 (`0.65s` `power2.out` / `0.85s` `power3.inOut` cover with `Craving...` `#4C0016` `Modak` at `'-=0.4'`, seamlessly lifting via `0.75s` `power2.inOut` / `1.05s` `power4.inOut` while scaling `Craving...` to `1.3`).
 - **Where We Left Off:** Verified across desktop, tablet (`768px`), and mobile (`390px`) in Playwright with `0` console errors and `overflowX: false`.
+
+### [Session 20 — Tighter `#about`-to-`#experience` Section Spacing & Deeper `.jelly` Curve]
+- **Files Created/Modified:** `index.html`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - Tightened vertical spacing above and inside `#experience`: set `#about` to `pt-[6vw] pb-[3vw]`, `#about-media-stage` to `pb-[2vw] max-md:pb-[4vw]`, `#experience` to `-mt-[6.5vw] max-md:-mt-[6vw]`, and compacted inner spacing (`mt-[3.5vw] translate-y-[2vw]`, `EXPERIENCE` at `top-[1.5vw]`, `h2` at `mt-[5.5vw]`) while maintaining clean separation below all 3 photo cards.
+  - Replaced `data-jelly-soft` with a deeper, more expressive `data-jelly-deep="true"` wave (`h-[270px] max-md:h-[115px]`, higher crests and deeper valleys animated continuously + `scaleY: 1.38` on scroll in [`initJellyWaves`](file:///c:/Users/Adan/Desktop/www/js/app.js#L1542-L1614)).
+- **Where We Left Off:** Browser-verified in Playwright (`1440x800` & `390x844`, `0` console errors, `overflowX: false`).
+
+### [Session 21 — Duplicate Attribute Cleanup, Responsive `vw` `#experience` Spacing & Balanced Deep `.jelly` Wave]
+- **Files Created/Modified:** `index.html`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Duplicate Attributes Removed (`index.html`):** Stripped duplicate `class`, `d`, and leftover `data-jelly-soft="true"` attributes on `#about`, `#about-media-stage`, `#experience`, `.jelly` SVG/path, the inner container, `EXPERIENCE`, and `<h2>` so browsers apply the intended spacing and deep curve classes.
+  - **Tight Responsive `vw` Spacing (`index.html`):** Replaced `.self`'s top `8vw` padding on `#experience` with explicit `pt-0 pb-[5vw] px-[2.5vw]` (`max-md:pb-[10vw] max-md:px-[4vw]`), pulled `#experience` up (`-mt-[4vw]`), set `.jelly` height to `h-[14.5vw] max-md:h-[21vw]`, updated the inner headline wrapper to `mt-[13.8vw] max-md:mt-[19.5vw] pt-[1vw] overflow-x-clip` and added `mb-[1.4vw] max-md:mb-[2.8vw]` on `EXPERIENCE` (leaving clean red gap both below the curve and above `FOOD THAT FEELS GOOD` without vertical clipping), and tightened `#about` (`pt-[5vw] pb-[1.5vw]`) + `#about-media-stage` (`pb-[3vw] max-md:pb-[6vw]`) while keeping clean beige clearance below the 3 photo cards.
+  - **Smooth Deep `.jelly` Curve (`js/app.js`):** Updated `initJellyWaves` (`data-jelly-deep="true"`) to `{ v: 108, s1c: 18, s1e: 138, s2c: 225, s2e: 138, s3c: 32, s3e: 102 }` animating cleanly without clipping `[0..300]` and `scaleY: 1.18` (desktop) / `1.12` (mobile).
+- **Where We Left Off:** Verified across `1920x1080`, `1440x800`, `768x1024`, and `390x844` in Playwright (`overflowX: false`, `0` console errors).
+
+### [Session 22 — Eliminated Menu Cards Scroll Lag / Hang (`#flavors` & `menu.html` 60fps Optimization)]
+- **Files Created/Modified:** `assets/burgers/1b.webp`–`6b.webp`, `index.html`, `menu.html`, `spices.html`, `contact.html`, `css/styles.css`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **98.4% Lighter Card Burger Assets (`assets/burgers/1b.webp`–`6b.webp`):** Downsampled the 6 oversized `~3200px` (`6.6–7.9 MB` each, `43.3 MB` total) PNGs to crisp `900px` RGBA WebPs (`81.3–140.8 KB` each, `~690 KB` total) and updated references across `index.html`, `menu.html`, `spices.html`, and `contact.html` with `decoding="async"`.
+  - **GPU-Only `.menu-card` Hover & Popovers (`css/styles.css`, `index.html`, `menu.html`):** Replaced `backdrop-blur-md` on card Quick Details tooltips with `bg-white/95`, replaced `transition-all` / `box-shadow` transitions on `.menu-card` with `contain: layout paint; backface-visibility: hidden;` and `translate3d`, removing 6 backdrop-blur passes and repaint stalls.
+  - **Main-Thread Frame Optimizations (`js/app.js`):** Gated `initIngredientCursor`'s `gsap.ticker` rope solver with `pointer.awake` so stationary cursors consume `0` CPU ticks during scroll, paused offscreen `.jelly` wave timelines via `IntersectionObserver` in `initJellyWaves`, and set `force3D: true`, `clearProps: 'transform'`, and `once: true` on `initMenuPage`'s grid reveal `ScrollTrigger`.
+- **Where We Left Off:** Profiled in Playwright: `#flavors` scroll went from `266.7ms` max frame / `34.2ms` avg down to `16.9ms` max / `16.6ms` avg (`0` frames > 25ms), and `menu.html` measured `16.8ms` max / `16.2ms` avg (`0` console errors, `overflowX: false`).
+
+### [Session 23 — Unified Whole-Card Hover States Across `.menu-card` & `.flavor-dip-card`]
+- **Files Created/Modified:** `css/styles.css`, `index.html`, `menu.html`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Cohesive `.menu-card` Hover Anywhere (`css/styles.css`):** Added `cursor: pointer`, `border: 0.18vw solid transparent` transitioning to `var(--mustard)` on hover, card lift (`translate3d(0, -0.45vw, 0)`), lifted/tilted burger image (`translate3d(0, -1.6vw, 0) scale(1.06) rotate(-2deg)`), checkerboard wave scale + mustard shift, and `+` button activation (`var(--red)` + `scale(1.08)`) across the entire card surface.
+  - **Clean Non-Overlapping Quick Details (`index.html`, `menu.html`):** Repositioned Quick Details to `bottom-[7vw] max-lg:bottom-[9.8vw] max-md:hidden` with opaque `bg-white` (`border-black/15`) so card titles & prices stay completely legible beneath it on both desktop and tablet hover.
+  - **Whole-Card Hover on `.flavor-dip-card` (`css/styles.css`):** Added `cursor: pointer`, `translate3d` lift, border ring (`var(--mustard)` / `var(--red)`), cutout image bounce, and button scale response whenever hovering anywhere on a dip/side card.
+- **Where We Left Off:** Verified in Playwright across `1440x900` and `900x1024` (`gapQdToFooter: 8`, `overflowX: false`, `0` console errors).
+
+### [Session 24 — `Sauce & Sides` Spacing Lift & `#flavor-dips` GSAP Choreographed Animations]
+- **Files Created/Modified:** `index.html`, `menu.html`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Raised `SAUCE & SIDES` & `#flavor-dips` Spacing (`index.html`, `menu.html`):** Tightened `#flavor-dips` top spacing (`mt-[3.8vw] max-md:mt-[8vw]` on `index.html`, `mt-[3.5vw] max-md:mt-[7.5vw]` on `menu.html`), separated `SAUCE & SIDES` above `CRAFTED FLAVOR BOOSTERS` with `mb-[1.4vw] max-md:mb-[3vw]`, and enabled masked line reveal (`data-line-mask="true"`) on `"House-made daily in small batches"`.
+  - **Kinetic Card & Cutout Motion (`initFlavorDips` in `js/app.js`):** Added elastic stamp pop (`[data-dip-stamp="true"]`), staggered tilted spring entrance for `[data-flavor-dip="true"]`, spinning bounce cutout entrance + `IntersectionObserver`-paused idle float on `.flavor-dip-img img`, and elastic hover wobble returning seamlessly to float on `mouseleave`.
+- **Where We Left Off:** Verified in Playwright across `1440x900` and `390x844` (`floatActive: true`, `overflowX: false`, `0` console errors).
+
+### [Session 25 — `.flavor-dip-card` Box Animations, Inner Stagger, Ambient Sheen & 3D Hover Tilt]
+- **Files Created/Modified:** `css/styles.css`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Box Entrance & Inner Text Stagger (`initFlavorDips` in `js/app.js`):** Added tilted spring box entrance (`y: 52, scale: 0.86, rotation: (i - 1) * 4.5`) plus sequential inner cascade for badge, title, copy, price, and button (`:scope > div:first-child > *`).
+  - **Interactive 3D Pointer Tilt & Elastic Spring (`js/app.js`):** Added hover lift (`y: -10, scale: 1.025`), cursor-tracking micro-tilt on `mousemove`, and elastic return on `mouseleave` without fighting cutout float or CSS border highlights.
+  - **Idle Sheen & Hover Gloss Sweep (`css/styles.css`):** Added staggered `@keyframes smshDipSheen` subtle sheen (`::before`) across idle cards and diagonal hover gloss sweep (`::after`) at zero paint cost.
+- **Where We Left Off:** Verified in Playwright at `1440x900` (`cardsVisible: true`, `allInnerVisible: true`, `cutoutFloatActive: true`, `cardHovered: true`, `overflowX: false`, `0` console errors).
+
+### [Session 26 — Delayed & Extended `#map-plane` Flight Scroll Window (`initMap`)]
+- **Files Created/Modified:** `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Separated `planeScrollCfg` (`initMap` in `js/app.js`):** Adjusted `#map-plane` scroll range from `start: '-10% top'`, `end: '75%'` to `start: 'top top'`, `end: 'bottom 25%'` (`scrollCfg` for cards set to `start: '-6% top'`, `end: '82%'`) so the plane starts `235px` later and completes `362px` lower down `#map-desktop-stage`, staying clearly in frame alongside `SYDNEY` and `TOKYO`.
+- **Where We Left Off:** Verified in Playwright across 6 scroll positions (`0` to `1.0`) at `1440x900` (`overflowX: false`, `0` console errors).
+
+### [Session 27 — Instant `#main-menu` Popover Link Animation]
+- **Files Created/Modified:** `index.html`, `menu.html`, `spices.html`, `contact.html`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Removed CSS `transition-all` Drag (`index.html`, `menu.html`, `spices.html`, `contact.html`):** Replaced `transition-all duration-300 transform` on `.menu-item-link` across all 4 pages with `transition-colors duration-200` so CSS transitions never fight GSAP's `opacity` or `y` animations.
+  - **Eliminated `0.14s` Delay (`openMenu` in `js/app.js`):** Removed `delay: 0.14`, tightened popover open duration (`0.3s`), link stagger (`0.02s`, `duration: 0.22s`, `clearProps: 'transform'`), and bar animations (`0.24s`).
+- **Where We Left Off:** Verified in Playwright (`lastLinkOp: 0.99` at `268ms` and `1.0` settled at `384ms`, `0` console errors).
+
+### [Session 28 — Full-Site QA Audit & Final PNG-to-WebP Optimization]
+- **Files Created/Modified:** `assets/img-webp/burgerselfie.webp`, `assets/img-webp/burger-boy.webp`, `assets/img-webp/plane.webp`, `index.html`, `menu.html`, `spices.html`, `contact.html`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Eliminated Mobile/CTA First-Decode Hitches:** Converted `burgerselfie.png` (`2614 KB` -> `129.5 KB`), `burger-boy.png` (`1705 KB` -> `271.0 KB`), and `plane.png` (`804 KB` -> `135.3 KB`) into `./assets/img-webp/*.webp`, updated all 4 HTML pages, and set page-appropriate `<link rel="preload">` targets.
+  - **Verified All Pages & Animations:** Confirmed zero duplicate attributes or missing assets across all 4 pages; verified preloader, hero entrances, `#experience` eyes, `#ingredients` parallax, `#flavors` filters/cart/checkout, `#flavor-dips` animations, `#map-desktop`/`#map-mobile`, `#footer` juggling, Barba cross-page & hash navigation, `spices.html` runners, `contact.html` form validation/submit/reset, and smooth 60fps scrolling at `1920x1080`, `1440x900`, and `390x844`.
+- **Where We Left Off:** Full-site QA passed (`overflowX: false`, `0` hidden pops/broken images, `0` console errors).

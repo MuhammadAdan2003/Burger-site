@@ -955,6 +955,7 @@
       y: null,
       hasMoved: false,
       hidden: false,
+      awake: false,
     };
 
     const segLenState = { value: segmentLength };
@@ -986,6 +987,7 @@
       (e) => {
         pointer.x = e.clientX;
         pointer.y = e.clientY;
+        pointer.awake = true;
 
         if (!pointer.hasMoved) {
           pointer.hasMoved = true;
@@ -1032,7 +1034,7 @@
     );
 
     gsap.ticker.add(() => {
-      if (!pointer.hasMoved || pointer.x === null || !rope.length) return;
+      if (!pointer.hasMoved || !pointer.awake || pointer.x === null || !rope.length) return;
 
       gsap.to(rope[0], {
         x: pointer.x,
@@ -1043,12 +1045,14 @@
       });
 
       const maxDist = Math.max(0, segLenState.value ?? segmentLength);
+      let maxDelta = Math.hypot(pointer.x - rope[0].x, pointer.y - rope[0].y);
       for (let r = 1; r < segmentCount; r += 1) {
         const prev = rope[r - 1];
         const curr = rope[r];
         const dx = prev.x - curr.x;
         const dy = prev.y - curr.y;
         const dist = Math.hypot(dx, dy);
+        if (dist > maxDelta) maxDelta = dist;
         if (dist > maxDist) {
           const angle = Math.atan2(dy, dx);
           const tx = prev.x - Math.cos(angle) * maxDist;
@@ -1087,6 +1091,10 @@
           gsap.set(node, { rotation: deg });
         }
       });
+
+      if (maxDist <= 0.05 && maxDelta <= 0.2) {
+        pointer.awake = false;
+      }
     });
   }
 
@@ -1240,17 +1248,17 @@
 
       gsap.killTweensOf([menuEl, backdrop, bar1, bar2, bar3, ...menuLinks]);
 
-      gsap.to(backdrop, { opacity: 1, duration: 0.28, ease: 'power2.out' });
-      gsap.to(menuEl, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2.2)' });
+      gsap.to(backdrop, { opacity: 1, duration: 0.2, ease: 'power2.out' });
+      gsap.to(menuEl, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.8)', force3D: true });
       gsap.fromTo(
         menuLinks,
-        { y: 18, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.38, stagger: 0.06, delay: 0.14, ease: 'power3.out' }
+        { y: 10, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, duration: 0.22, stagger: 0.02, ease: 'power3.out', force3D: true, clearProps: 'transform' }
       );
 
-      gsap.to(bar1, { top: '50%', yPercent: -50, rotation: 45, duration: 0.35, ease: 'power3.inOut' });
-      gsap.to(bar2, { opacity: 0, scaleX: 0, duration: 0.25, ease: 'power3.inOut' });
-      gsap.to(bar3, { bottom: 'auto', top: '50%', yPercent: -50, rotation: -45, duration: 0.35, ease: 'power3.inOut' });
+      gsap.to(bar1, { top: '50%', yPercent: -50, rotation: 45, duration: 0.24, ease: 'power3.inOut' });
+      gsap.to(bar2, { opacity: 0, scaleX: 0, duration: 0.18, ease: 'power3.inOut' });
+      gsap.to(bar3, { bottom: 'auto', top: '50%', yPercent: -50, rotation: -45, duration: 0.24, ease: 'power3.inOut' });
     }
 
     function closeMenu(resumeScroll = true) {
@@ -1543,14 +1551,14 @@
     container.querySelectorAll('[data-jelly-svg="true"]').forEach((svg) => {
       const path = svg.querySelector('[data-jelly-path="true"]');
       const flip = svg.getAttribute('data-jelly-flip') === 'true';
-      const soft = svg.getAttribute('data-jelly-soft') === 'true';
+      const deep = svg.getAttribute('data-jelly-deep') === 'true';
 
       if (path) {
         const state = flip
           ? { v: 165, s1c: 235, s1e: 145, s2c: 195, s2e: 163, s3c: 195, s3e: 195 }
-          : soft
-            ? { v: 112, s1c: 76, s1e: 122, s2c: 94, s2e: 116, s3c: 96, s3e: 96 }
-            : { v: 135, s1c: 65, s1e: 155, s2c: 105, s2e: 137, s3c: 105, s3e: 105 };
+            : deep
+              ? { v: 108, s1c: 18, s1e: 138, s2c: 225, s2e: 138, s3c: 32, s3e: 102 }
+              : { v: 135, s1c: 65, s1e: 155, s2c: 105, s2e: 137, s3c: 105, s3e: 105 };
 
         const buildPath = () =>
           flip
@@ -1565,11 +1573,11 @@
             .to(state, { v: 145, s1c: 215, s1e: 155, duration: 1, ease: 'sine.inOut', onUpdate: update }, 0)
             .to(state, { s2c: 175, s2e: 140, duration: 2, ease: 'sine.inOut', onUpdate: update }, 0.3)
             .to(state, { s3c: 170, s3e: 200, duration: 1.8, ease: 'sine.inOut', onUpdate: update }, 0.6);
-        } else if (soft) {
+        } else if (deep) {
           waveTl
-            .to(state, { v: 124, s1c: 64, s1e: 134, duration: 1.1, ease: 'sine.inOut', onUpdate: update }, 0)
-            .to(state, { s2c: 82, s2e: 128, duration: 2, ease: 'sine.inOut', onUpdate: update }, 0.3)
-            .to(state, { s3c: 112, s3e: 84, duration: 1.8, ease: 'sine.inOut', onUpdate: update }, 0.6);
+            .to(state, { v: 128, s1c: 36, s1e: 122, duration: 1.1, ease: 'sine.inOut', onUpdate: update }, 0)
+            .to(state, { s2c: 205, s2e: 150, duration: 2, ease: 'sine.inOut', onUpdate: update }, 0.3)
+            .to(state, { s3c: 48, s3e: 88, duration: 1.8, ease: 'sine.inOut', onUpdate: update }, 0.6);
         } else {
           waveTl
             .to(state, { v: 155, s1c: 45, s1e: 175, duration: 1, ease: 'sine.inOut', onUpdate: update }, 0)
@@ -1577,13 +1585,24 @@
             .to(state, { s3c: 130, s3e: 80, duration: 1.8, ease: 'sine.inOut', onUpdate: update }, 0.6);
         }
         addPageCleanup(() => waveTl.kill());
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(
+            (entries) => {
+              if (entries[0]?.isIntersecting) waveTl.play();
+              else waveTl.pause();
+            },
+            { rootMargin: '150px 0px' }
+          );
+          io.observe(svg);
+          addPageCleanup(() => io.disconnect());
+        }
       }
 
       gsap.set(svg, { transformOrigin: flip ? 'bottom center' : 'top center' });
       const mm = ScrollTrigger.matchMedia();
       mm.add('(min-width: 768px)', () => {
         gsap.to(svg, {
-          scaleY: soft ? 1.18 : 1.5,
+          scaleY: deep ? 1.18 : 1.5,
           scrollTrigger: {
             trigger: svg,
             start: flip ? 'bottom 80%' : 'top 80%',
@@ -1595,7 +1614,7 @@
       });
       mm.add('(max-width: 767px)', () => {
         gsap.to(svg, {
-          scaleY: soft ? 1.08 : 1.2,
+          scaleY: deep ? 1.12 : 1.2,
           scrollTrigger: {
             trigger: svg,
             start: flip ? 'bottom 95%' : 'top 90%',
@@ -1693,8 +1712,16 @@
 
       const scrollCfg = {
         trigger: desktopStage,
-        start: '-10% top',
-        end: '75%',
+        start: '-6% top',
+        end: '82%',
+        scrub: 1,
+        invalidateOnRefresh: true,
+      };
+
+      const planeScrollCfg = {
+        trigger: desktopStage,
+        start: 'top top',
+        end: 'bottom 25%',
         scrub: 1,
         invalidateOnRefresh: true,
       };
@@ -1727,7 +1754,7 @@
           motionPath: { path, align: path, alignOrigin: [0.5, 0.5], autoRotate: -90 },
           ease: 'none',
           force3D: true,
-          scrollTrigger: { ...scrollCfg },
+          scrollTrigger: { ...planeScrollCfg },
         });
       }
 
@@ -2006,10 +2033,9 @@
             .map(
               (item) => `
               <div class="flex items-center justify-between gap-[.7vw] max-md:gap-[2.8vw] rounded-[1vw] max-md:rounded-[4vw] bg-beige/10 border border-beige/15 px-[.85vw] py-[.65vw] max-md:px-[3.5vw] max-md:py-[2.4vw]">
-                ${
-                  item.img
-                    ? `<img src="${item.img}" alt="" class="size-[2.5vw] max-lg:size-[4vw] max-md:size-[9.5vw] rounded-[.7vw] max-md:rounded-[2.5vw] bg-white/90 p-[.2vw] object-contain shrink-0" />`
-                    : ''
+                ${item.img
+                  ? `<img src="${item.img}" alt="" class="size-[2.5vw] max-lg:size-[4vw] max-md:size-[9.5vw] rounded-[.7vw] max-md:rounded-[2.5vw] bg-white/90 p-[.2vw] object-contain shrink-0" />`
+                  : ''
                 }
                 <div class="min-w-0 flex-1">
                   <p class="font-mouse-memoirs uppercase text-[1vw] max-lg:text-[1.6vw] max-md:text-[4vw] text-beige truncate">${item.name}</p>
@@ -2215,38 +2241,207 @@
     });
   }
 
+  function initFlavorDips(container) {
+    const dipSection = container.querySelector('#flavor-dips');
+    const stamp = container.querySelector('[data-dip-stamp="true"]');
+    const dips = gsap.utils.toArray('[data-flavor-dip="true"]', container);
+    if (!dipSection || !dips.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cutoutImgs = gsap.utils.toArray('.flavor-dip-img img', dipSection);
+    const floatTweens = [];
+    let sectionVisible = true;
+
+    if (stamp && !reduceMotion) {
+      const restRot = window.innerWidth < 768 ? 0 : -3;
+      gsap.set(stamp, { opacity: 0, scale: 0.45, y: 18, rotation: restRot - 10, force3D: true });
+      gsap.to(stamp, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        rotation: restRot,
+        duration: 0.72,
+        ease: 'back.out(2.2)',
+        force3D: true,
+        scrollTrigger: { trigger: dipSection, start: 'top 88%', once: true },
+      });
+    }
+
+    const innerBlocks = dips.map((card) =>
+      gsap.utils.toArray(':scope > div:first-child > *', card)
+    );
+    innerBlocks.forEach((els) => {
+      if (els.length && !reduceMotion) gsap.set(els, { opacity: 0, y: 16, force3D: true });
+    });
+
+    gsap.set(dips, {
+      opacity: 0,
+      y: 52,
+      scale: 0.86,
+      rotation: (i) => (i - 1) * 4.5,
+      force3D: true,
+    });
+    gsap.to(dips, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotation: 0,
+      duration: 0.8,
+      stagger: 0.11,
+      ease: 'back.out(1.75)',
+      force3D: true,
+      scrollTrigger: { trigger: dipSection, start: 'top 88%', once: true },
+    });
+
+    if (!reduceMotion) {
+      innerBlocks.forEach((els, idx) => {
+        if (!els.length) return;
+        gsap.to(els, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.055,
+          delay: 0.12 + idx * 0.1,
+          ease: 'power3.out',
+          force3D: true,
+          scrollTrigger: { trigger: dipSection, start: 'top 86%', once: true },
+        });
+      });
+    }
+
+    if (cutoutImgs.length && !reduceMotion) {
+      gsap.set(cutoutImgs, { scale: 0.55, rotation: -18, opacity: 0, force3D: true });
+      gsap.to(cutoutImgs, {
+        scale: 1,
+        rotation: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: 0.16,
+        stagger: 0.11,
+        ease: 'back.out(2.3)',
+        force3D: true,
+        scrollTrigger: { trigger: dipSection, start: 'top 86%', once: true },
+        onComplete: () => {
+          cutoutImgs.forEach((img, idx) => {
+            const floatTween = gsap.to(img, {
+              y: -7,
+              rotation: idx % 2 === 0 ? 5 : -5,
+              duration: 1.9 + idx * 0.28,
+              delay: idx * 0.2,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut',
+              force3D: true,
+              paused: !sectionVisible,
+            });
+            floatTweens[idx] = floatTween;
+            addPageCleanup(() => floatTween.kill());
+          });
+        },
+      });
+    }
+
+    if ('IntersectionObserver' in window && !reduceMotion) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          sectionVisible = !!entries[0]?.isIntersecting;
+          floatTweens.forEach((t, idx) => {
+            if (t && !dips[idx]?.matches(':hover')) {
+              sectionVisible ? t.play() : t.pause();
+            }
+          });
+        },
+        { rootMargin: '150px 0px' }
+      );
+      io.observe(dipSection);
+      addPageCleanup(() => io.disconnect());
+    }
+
+    if (!window.matchMedia('(pointer: coarse)').matches && !reduceMotion) {
+      dips.forEach((card, idx) => {
+        const img = card.querySelector('.flavor-dip-img img');
+
+        card.addEventListener('mouseenter', () => {
+          floatTweens[idx]?.pause();
+          gsap.to(card, {
+            y: -10,
+            scale: 1.025,
+            rotation: idx === 0 ? -1.4 : idx === 2 ? 1.4 : 0,
+            duration: 0.36,
+            ease: 'power3.out',
+            force3D: true,
+            overwrite: 'auto',
+          });
+          if (img) {
+            gsap.fromTo(
+              img,
+              { rotation: idx % 2 === 0 ? -12 : 12 },
+              { rotation: idx % 2 === 0 ? 5 : -5, duration: 0.55, ease: 'elastic.out(1.2, 0.45)', overwrite: 'auto' }
+            );
+          }
+        });
+
+        card.addEventListener(
+          'mousemove',
+          (e) => {
+            const rect = card.getBoundingClientRect();
+            if (!rect.width) return;
+            const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+            const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+            gsap.to(card, {
+              x: nx * 4,
+              y: -10 + ny * 3,
+              rotation: nx * 2.2,
+              duration: 0.3,
+              ease: 'power2.out',
+              force3D: true,
+              overwrite: 'auto',
+            });
+          },
+          { passive: true }
+        );
+
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            duration: 0.65,
+            ease: 'elastic.out(1, 0.55)',
+            force3D: true,
+            overwrite: 'auto',
+          });
+          if (floatTweens[idx] && sectionVisible) {
+            floatTweens[idx].invalidate();
+            floatTweens[idx].restart(true);
+          }
+        });
+      });
+    }
+  }
+
   function initMenuPage(container) {
     const grids = gsap.utils.toArray('#menu-cards-grid, #flavors-cards-grid', container);
     grids.forEach((grid) => {
       const cards = gsap.utils.toArray('[data-menu-card="true"]', grid);
       if (cards.length) {
-        gsap.set(cards, { opacity: 0, y: 40, scale: 0.94 });
+        gsap.set(cards, { opacity: 0, y: 32, scale: 0.96, force3D: true });
         gsap.to(cards, {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.75,
-          stagger: 0.08,
-          ease: 'back.out(1.5)',
-          scrollTrigger: { trigger: grid, start: 'top 86%', toggleActions: 'play none none none' },
+          duration: 0.65,
+          stagger: 0.06,
+          ease: 'back.out(1.4)',
+          force3D: true,
+          clearProps: 'transform',
+          scrollTrigger: { trigger: grid, start: 'top 90%', once: true },
         });
       }
     });
 
-    const dips = gsap.utils.toArray('[data-flavor-dip="true"]', container);
-    if (dips.length) {
-      const dipSection = container.querySelector('#flavor-dips') || dips[0].parentElement;
-      gsap.set(dips, { opacity: 0, y: 32, scale: 0.94 });
-      gsap.to(dips, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.7,
-        stagger: 0.09,
-        ease: 'back.out(1.6)',
-        scrollTrigger: { trigger: dipSection, start: 'top 88%', toggleActions: 'play none none none' },
-      });
-    }
+    initFlavorDips(container);
 
     // Interactive Flavor Category Filter Pills
     const filterBtns = gsap.utils.toArray('[data-flavor-filter]', container);
@@ -2483,7 +2678,7 @@
     SMSH.pageCleanups.forEach((fn) => {
       try {
         fn();
-      } catch {}
+      } catch { }
     });
     SMSH.pageCleanups = [];
   }

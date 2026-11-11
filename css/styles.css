@@ -411,18 +411,21 @@ html.lenis body {
    Menu Cards, Contact Form & Cart UX
    ========================================================================== */
 .menu-card {
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s ease;
+  cursor: pointer;
+  border: 0.18vw solid transparent;
+  contain: layout paint;
+  backface-visibility: hidden;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease;
 }
 
 .menu-card:hover {
-  transform: translateY(-0.4vw);
-  box-shadow: 0 1.4vw 3vw rgba(27, 27, 27, 0.14);
+  transform: translate3d(0, -0.45vw, 0);
+  border-color: var(--mustard);
 }
 
 .menu-card:hover .menu-checker-band {
-  transform: translateY(-50%) scaleY(1.1);
+  transform: translateY(-50%) scaleY(1.12);
 }
 
 .menu-card:hover .menu-checker-red {
@@ -430,7 +433,16 @@ html.lenis body {
 }
 
 .menu-card:hover .menu-burger-img {
-  transform: scale(1.07) rotate(-2deg);
+  transform: translate3d(0, -1.6vw, 0) scale(1.06) rotate(-2deg);
+}
+
+.menu-card:hover .add-cart-circle {
+  background-color: var(--red);
+  transform: scale(1.08);
+}
+
+.menu-card:hover .add-cart-circle:hover {
+  transform: scale(1.14) rotate(90deg);
 }
 
 @keyframes smshCartRing {
@@ -461,8 +473,78 @@ html.lenis body {
   transform: translateY(-2px);
 }
 
+.flavor-dip-card {
+  cursor: pointer;
+  border: 0.18vw solid transparent;
+  contain: layout paint;
+  backface-visibility: hidden;
+  transition: border-color 0.28s ease;
+}
+
+@keyframes smshDipSheen {
+  0%, 72%, 100% {
+    transform: translate3d(-140%, 0, 0);
+  }
+  88% {
+    transform: translate3d(140%, 0, 0);
+  }
+}
+
+.flavor-dip-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, transparent 36%, rgba(255, 255, 255, 0.16) 50%, transparent 64%);
+  transform: translate3d(-140%, 0, 0);
+  pointer-events: none;
+  z-index: 2;
+  animation: smshDipSheen 7s ease-in-out infinite;
+}
+
+.flavor-dip-card:nth-child(2)::before {
+  animation-delay: 1.2s;
+}
+
+.flavor-dip-card:nth-child(3)::before {
+  animation-delay: 2.4s;
+}
+
+.flavor-dip-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.24) 50%, transparent 68%);
+  transform: translate3d(-140%, 0, 0);
+  pointer-events: none;
+  z-index: 2;
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flavor-dip-card:hover::after {
+  transform: translate3d(140%, 0, 0);
+}
+
+.flavor-dip-card:hover {
+  border-color: var(--mustard);
+}
+
+.flavor-dip-card.bg-mustard:hover {
+  border-color: var(--red);
+}
+
 .flavor-dip-card:hover .flavor-dip-img {
   transform: scale(1.1) rotate(8deg);
+}
+
+.flavor-dip-card:hover button[data-add-cart] {
+  transform: scale(1.06);
+}
+
+@media (max-width: 767px) {
+  .menu-card,
+  .flavor-dip-card {
+    border-width: 2px;
+  }
 }
 
 @keyframes smshShake {
