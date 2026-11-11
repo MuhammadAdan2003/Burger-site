@@ -168,6 +168,10 @@ html.lenis body {
 
 /* Mobile Breakpoint (<= 767px): Matches Tailwind max-md: 1:1 */
 @media (max-width: 767px) {
+  a,
+  button {
+    touch-action: manipulation;
+  }
   .self {
     padding: 16vw 4vw;
   }

@@ -371,7 +371,7 @@
         ease: 'back.out(1.7)',
         scrollTrigger: {
           trigger: triggerEl,
-          start: 'top 86%',
+          start: 'top 94%',
           toggleActions: 'play none none none',
         },
       });
@@ -389,7 +389,7 @@
           ease: 'expo.out',
           scrollTrigger: {
             trigger: el.parentElement || el,
-            start: 'top 89%',
+            start: 'top 95%',
             toggleActions: 'play none none none',
           },
         });
@@ -421,7 +421,8 @@
     const wave3 = document.getElementById('preloader-wave-3');
 
     gsap.set(layers, {
-      xPercent: -50,
+      xPercent: 0,
+      x: 0,
       y: -260,
       scale: 0.86,
       opacity: 0,
@@ -864,35 +865,47 @@
         {
           name: 'smsh-liquid-layers',
           async leave(data) {
-            SMSH.isTransitioning = true;
-            if (SMSH.closeMenu) SMSH.closeMenu(false);
-            if (SMSH.cartOpen && typeof SMSH.closeCart === 'function') SMSH.closeCart();
-            if (data.trigger && data.trigger.href) {
-              try {
-                SMSH.pendingHash = new URL(data.trigger.href, window.location.href).hash || '';
-              } catch {
+            try {
+              SMSH.isTransitioning = true;
+              if (SMSH.closeMenu) SMSH.closeMenu(false);
+              if (SMSH.cartOpen && typeof SMSH.closeCart === 'function') SMSH.closeCart();
+              if (data.trigger && data.trigger.href) {
+                try {
+                  SMSH.pendingHash = new URL(data.trigger.href, window.location.href).hash || '';
+                } catch {
+                  SMSH.pendingHash = '';
+                }
+              } else if (data.next && data.next.url && data.next.url.href) {
+                SMSH.pendingHash = data.next.url.hash || '';
+              } else {
                 SMSH.pendingHash = '';
               }
-            } else if (data.next && data.next.url && data.next.url.href) {
-              SMSH.pendingHash = data.next.url.hash || '';
-            } else {
-              SMSH.pendingHash = '';
+              SMSH.lenis?.stop();
+              await playLiquidCoverIn();
+            } catch {
+              SMSH.isTransitioning = false;
+              const fallbackHref = data?.next?.url?.href || data?.trigger?.href;
+              if (fallbackHref) window.location.assign(fallbackHref);
             }
-            SMSH.lenis?.stop();
-            await playLiquidCoverIn();
           },
           async beforeEnter(data) {
-            cleanupPage();
-            data.current.container.style.display = 'none';
-            window.scrollTo(0, 0);
-            SMSH.lenis?.scrollTo(0, { immediate: true });
-            SMSH.showNav?.();
+            try {
+              cleanupPage();
+              data.current.container.style.display = 'none';
+              window.scrollTo(0, 0);
+              SMSH.lenis?.scrollTo(0, { immediate: true });
+              SMSH.showNav?.();
 
-            await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-            SMSH.heroRevealed = false;
-            SMSH.heroAnimating = false;
-            initPageContainer(data.next.container);
+              SMSH.heroRevealed = false;
+              SMSH.heroAnimating = false;
+              initPageContainer(data.next.container);
+            } catch {
+              SMSH.isTransitioning = false;
+              const fallbackHref = data?.next?.url?.href;
+              if (fallbackHref) window.location.assign(fallbackHref);
+            }
           },
           async enter(data) {
             try {
@@ -927,6 +940,12 @@
         },
       ],
     });
+
+    if (window.barba.hooks) {
+      window.barba.hooks.after(() => {
+        SMSH.isTransitioning = false;
+      });
+    }
   }
 
   /* ------------------------------------------------------------------------
@@ -1221,12 +1240,13 @@
           lastScroll = scroll;
           return;
         }
+        const isPhone = window.innerWidth < 768;
         const delta = scroll - lastScroll;
-        if (scroll < 10) {
+        if (scroll < (isPhone ? 45 : 10)) {
           showNav();
-        } else if (delta > 6) {
+        } else if (delta > (isPhone ? 16 : 6)) {
           hideNav();
-        } else if (delta < -6) {
+        } else if (delta < (isPhone ? -4 : -6)) {
           showNav();
         }
         lastScroll = scroll;
@@ -2213,6 +2233,8 @@
       if (modalSummary) {
         modalSummary.textContent = `Your fresh order (${summary}) — Total $${total.toFixed(2)} is fired on the SMSH flat-top.`;
       }
+      modal.classList.remove('hidden');
+      modal.classList.add('grid');
       modalBackdrop.style.pointerEvents = 'auto';
       modal.style.pointerEvents = 'auto';
       gsap.to(modalBackdrop, { opacity: 1, duration: 0.28, ease: 'power2.out' });
@@ -2224,7 +2246,18 @@
       modalBackdrop.style.pointerEvents = 'none';
       modal.style.pointerEvents = 'none';
       gsap.to(modalBackdrop, { opacity: 0, duration: 0.24, ease: 'power2.inOut' });
-      gsap.to(modal, { opacity: 0, scale: 0.92, duration: 0.24, ease: 'power2.in' });
+      gsap.to(modal, {
+        opacity: 0,
+        scale: 0.92,
+        duration: 0.24,
+        ease: 'power2.in',
+        onComplete: () => {
+          if (modal.style.pointerEvents === 'none') {
+            modal.classList.add('hidden');
+            modal.classList.remove('grid');
+          }
+        },
+      });
       if (clear) {
         SMSH.cart = [];
         refreshCartUI();
@@ -2233,6 +2266,9 @@
 
     checkoutBtn?.addEventListener('click', openCheckoutModal);
     modalBackdrop?.addEventListener('click', () => closeCheckoutModal(false));
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeCheckoutModal(false);
+    });
     modalClose?.addEventListener('click', () => closeCheckoutModal(false));
     modalDone?.addEventListener('click', () => closeCheckoutModal(true));
 
@@ -2526,12 +2562,16 @@
     const path = container.querySelector('#story-bite-path');
     const runners = gsap.utils.toArray('[data-spice-runner="true"]', container);
 
-    if (!stage || !path || !runners.length) return;
+    const mobileStage = container.querySelector('#story-bite-mobile-stage');
+    const mobilePath = container.querySelector('#story-bite-mobile-path');
+    const mobileRunners = gsap.utils.toArray('[data-spice-mobile-runner="true"]', container);
+    const mobileCards = gsap.utils.toArray('[data-spice-mobile-card="true"]', container);
 
     const mm = gsap.matchMedia();
     addPageCleanup(() => mm.revert());
 
     mm.add('(min-width: 768px)', () => {
+      if (!stage || !path || !runners.length) return;
       const count = runners.length;
       gsap.set(runners, { xPercent: -50, yPercent: -50, opacity: 0, force3D: true });
 
@@ -2555,6 +2595,75 @@
         );
         segTl.fromTo(runners[t], { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power1.inOut' }, at);
         segTl.to(runners[t], { opacity: 0, duration: 0.2, ease: 'power1.inOut' }, at + 0.8);
+      }
+    });
+
+    mm.add('(max-width: 767px)', () => {
+      if (!mobileStage) return;
+
+      mobileCards.forEach((card, idx) => {
+        gsap.set(card, { opacity: 0, scale: 0.84, y: 40, force3D: true });
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'top 86%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo(
+              card,
+              { opacity: 0, scale: 0.84, rotate: idx % 2 === 0 ? -4 : 4, y: 40 },
+              { opacity: 1, scale: 1, rotate: idx % 2 === 0 ? -1.5 : 1.5, y: 0, duration: 0.55, ease: 'back.out(2.1)', overwrite: 'auto', force3D: true }
+            );
+          },
+        });
+      });
+
+      if (mobilePath) {
+        gsap.to(mobilePath, {
+          strokeDashoffset: -240,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: mobileStage,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
+
+      if (mobilePath && mobileRunners.length) {
+        const count = mobileRunners.length;
+        gsap.set(mobileRunners, { xPercent: -50, yPercent: -50, opacity: 0, force3D: true });
+
+        const segTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: mobileStage,
+            start: 'top 65%',
+            end: '94% center',
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        for (let t = 0; t < count; t++) {
+          const at = t * 1;
+          segTl.fromTo(
+            mobileRunners[t],
+            {
+              rotation: t % 2 === 0 ? -15 : 15,
+              motionPath: { path: mobilePath, align: mobilePath, alignOrigin: [0.5, 0.5], start: t / count, end: t / count },
+            },
+            {
+              rotation: t % 2 === 0 ? 15 : -15,
+              motionPath: { path: mobilePath, align: mobilePath, alignOrigin: [0.5, 0.5], start: t / count, end: (t + 1) / count },
+              duration: 1,
+              ease: 'none',
+            },
+            at
+          );
+          segTl.fromTo(mobileRunners[t], { opacity: 0, scale: 0.78 }, { opacity: 1, scale: 1, duration: 0.16, ease: 'power1.out' }, at + 0.12);
+          segTl.to(mobileRunners[t], { opacity: 0, scale: 0.78, duration: 0.16, ease: 'power1.in' }, at + 0.72);
+        }
       }
     });
   }

@@ -1,14 +1,14 @@
 # INSTRUCTION.md — Phased Plan & Live Session Handoff Tracker
 
 ## 1. Current Session Handoff Banner
-- **Current Phase:** **Session 28 Complete — Full-Site Multi-Page QA & Final Large-Asset WebP Optimization (`1920x1080`, `1440x900`, `390x844`)**
+- **Current Phase:** **Session 31 Complete — Centered `#preloader` Burger Stack Across All Viewports (`1440x900`, `375x812`)**
 - **Brand Identity:** **SMSH** (Multi-page Vanilla HTML architecture matching `cravburgers.shop` theme, colors, fonts, and GSAP animations)
 - **Tech Stack Locked:** Pure Vanilla HTML (`index.html`, `menu.html`, `spices.html`, `contact.html`) + Tailwind CSS CDN + Custom CSS (`css/styles.css`) + **Barba.js (`@barba/core@2.10.3`) CDN** + GSAP CDN (`gsap`, `ScrollTrigger`, `MotionPathPlugin`) + Lenis CDN + Vanilla JS (`js/app.js`)
-- **Last Completed Task:** Completed end-to-end QA across all 4 pages, animations, Barba transitions, interactive widgets, and responsive breakpoints, and eliminated remaining first-decode mobile/subpage hitches:
-  1. **Converted Remaining Heavy Sticker & Plane PNGs (`assets/img-webp/`):** Downsampled `burgerselfie.png` (`2.6 MB` -> `129.5 KB`), `burger-boy.png` (`1.7 MB` -> `271.0 KB`), and `plane.png` (`804 KB` -> `135.3 KB`) to crisp RGBA `.webp`s (`index.html`, `menu.html`, `spices.html`, `contact.html`) and aligned `<link rel="preload">` tags per subpage.
-  2. **Zero-Error Multi-Page Animation & Interactive Audit:** Verified `0` duplicate HTML attributes or missing asset links, hero pops, googly eye tracking, ingredients parallax, `#flavors` filter counts, fly-to-cart + checkout flow, `#map-desktop` & `#map-mobile` planes/cards, `#footer` juggling cutouts, `spices.html` spice runners (`16.6ms` avg), `contact.html` form validation/submit/reset (`16.6ms` avg), Barba hash navigation (`./index.html#about`), same-page liquid transition (`./index.html#flavors`), and smooth scrolling at `1920x1080` (`17ms` avg), `1440x900` (`16.9ms` avg), and `390x844` (`17.7ms` avg).
+- **Last Completed Task:** Fixed `#preloader` burger stack alignment across all 4 pages so the loading screen stays dead-center horizontally and vertically on both phone and desktop regardless of Tailwind Play CDN parse timing:
+  1. **Eliminated Double `-50%` Shift (`index.html`, `menu.html`, `spices.html`, `contact.html`, `js/app.js`):** Replaced `left-1/2 -translate-x-1/2 w-full` on all 6 `.preloader-layer`s per page with `left-0 w-full` and removed `xPercent: -50` (`xPercent: 0, x: 0`) in [`initPreloader`](file:///c:/Users/Adan/Desktop/www/js/app.js#L402-L545) so cached Tailwind CSS transforms never stack with GSAP `xPercent` to push the burger left.
+  2. **Centered Stage Vertically (`index.html`, `menu.html`, `spices.html`, `contact.html`):** Removed `mb-[8vw]` from `#preloader-burger-stage` so flex centering places the burger stack in the exact middle of `#preloader`.
 - **Next Immediate Task:** Ready for deployment or any further user requests.
-- **Known Issues / Blockers:** None (`overflowX: false` across all tested breakpoints/pages, `0` broken images, `0` console errors; temporary `.playwright-mcp` folder removed).
+- **Known Issues / Blockers:** None (verified in Playwright at `1440x900` & `375x812` on both initial and cached subpage loads; `0` console errors; `.playwright-mcp` removed).
 
 ---
 
@@ -254,3 +254,25 @@
   - **Eliminated Mobile/CTA First-Decode Hitches:** Converted `burgerselfie.png` (`2614 KB` -> `129.5 KB`), `burger-boy.png` (`1705 KB` -> `271.0 KB`), and `plane.png` (`804 KB` -> `135.3 KB`) into `./assets/img-webp/*.webp`, updated all 4 HTML pages, and set page-appropriate `<link rel="preload">` targets.
   - **Verified All Pages & Animations:** Confirmed zero duplicate attributes or missing assets across all 4 pages; verified preloader, hero entrances, `#experience` eyes, `#ingredients` parallax, `#flavors` filters/cart/checkout, `#flavor-dips` animations, `#map-desktop`/`#map-mobile`, `#footer` juggling, Barba cross-page & hash navigation, `spices.html` runners, `contact.html` form validation/submit/reset, and smooth 60fps scrolling at `1920x1080`, `1440x900`, and `390x844`.
 - **Where We Left Off:** Full-site QA passed (`overflowX: false`, `0` hidden pops/broken images, `0` console errors).
+
+### [Session 29 — Phone-Only Layout Fixes & `Contact` Navigation Fix]
+- **Files Created/Modified:** `css/styles.css`, `js/app.js`, `index.html`, `menu.html`, `spices.html`, `contact.html`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Fixed `#smsh-checkout-modal` Invisible Click-Intercept Bug (`index.html`, `menu.html`, `spices.html`, `contact.html`, `js/app.js`):** Removed permanent `pointer-events-auto` from `#smsh-checkout-modal`'s inner dialog card and hid `#smsh-checkout-modal` with `hidden` until opened in `openCheckoutModal` / re-hidden on `closeCheckoutModal` completion so closed modals cannot intercept taps over `#main-menu` (`CONTACT` link).
+  - **Phone Navigation & Scroll Hardening (`css/styles.css`, `js/app.js`, all 4 HTML pages):** Added full-row `max-md:block max-md:w-full max-md:py-[1.4vw]` hit areas on `.menu-item-link`, `max-md:max-h-[75dvh] max-md:overflow-y-auto` on `#main-menu`, larger footer nav link padding (`max-md:py-2 max-md:px-1.5`, `max-md:pb-[10vw]`), mobile `touch-action: manipulation`, higher phone scroll delta before hiding `#navbar`, and Barba error redirect fallbacks.
+  - **Phone-Only Layout & Overlap Fixes (`max-md:` only):** Tightened `#hero` spacing/text wrapping, eliminated `#about` fanned-card overflow (`overflow-x-clip`, `max-md:w-[26vw]`), kept `#ingredients` headlines crisp in front of corner-framed cutouts (`max-md:text-[18vw]`), replaced inline `style="height:6vw"` on `.menu-checker-band` with `h-[6vw] max-md:h-[14vw]`, repositioned CTA `burger-boy.webp` (`max-md:w-[27vw]`), and fixed `spices.html` hero seam/contrast/`#farmToBite` stickers.
+- **Where We Left Off:** Verified in Playwright across `375x812`, `390x844`, and `1440x900` (`Contact` navigation via `#main-menu` & `<footer>`, contact form submission, `scrollWidth <= innerWidth`, `0` console errors).
+
+### [Session 30 — Mobile `#storyofEveryBiteMobile` SVG Animations & Phone Heading Wave Clearance]
+- **Files Created/Modified:** `index.html`, `spices.html`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Added Mobile `#storyofEveryBiteMobile` SVG & Card Animations (`spices.html`, `js/app.js`):** Added `#story-bite-mobile-path` (curved dashed `#F4A804` SVG path), 4 `[data-spice-mobile-runner="true"]` cutouts (`lettuce.webp`, `tomato.webp`, `cheese-logo.webp`, `meat.webp`), and `[data-spice-mobile-card="true"]` mobile captions across `#story-bite-mobile-stage` (`gap-[38vw]`), and wired mobile `MotionPathPlugin` segment glides, dashed `strokeDashoffset` scroll motion, and staggered card pop-in reveals inside `initSpicesPage` (`mm.add('(max-width: 767px)')`).
+  - **Fixed Phone Heading Covered by `.jelly` Wave (`index.html`, `spices.html`, `js/app.js`):** Removed `space-y-[5vw]` on `#map-mobile` (`index.html`) and `#storyofEveryBiteMobile` (`spices.html`) where Tailwind's sibling specificity (`0,2,0`) overrode `mt-[30vw]` to `5vw` and tucked `"A STORY IN"` behind the top `.jelly` wave (`-66px` overlap). Switched heading wrappers to `pt-[32vw]` (`+36px`–`+37px` clearance below wave), added `[data-pop="true"]` + `[data-line-mask="true"]` to `#storyofEveryBiteMobile`, and set scroll trigger starts to `'top 94%'` / `'top 95%'` in `initScrollTextAnimations`.
+- **Where We Left Off:** Verified in Playwright at `375x812`, `390x844`, and `1440x900` (`docScrollW <= innerW`, `0` console errors, `.playwright-mcp` cleaned up).
+
+### [Session 31 — Centered `#preloader` Loading Burger Across Phone & Desktop]
+- **Files Created/Modified:** `index.html`, `menu.html`, `spices.html`, `contact.html`, `js/app.js`, `INSTRUCTION.md`
+- **What Changed:**
+  - **Eliminated Double `-50%` Horizontal Shift:** Replaced `left-1/2 -translate-x-1/2 w-full` on all 6 `.preloader-layer`s per page with `left-0 w-full` and updated `gsap.set(layers, ...)` in `initPreloader` (`js/app.js`) to `xPercent: 0, x: 0`, preventing Tailwind `-translate-x-1/2` (`-50%`) + GSAP `xPercent: -50` from stacking to `-100%` (`burgerCx: 102px` on `375px` mobile).
+  - **Vertical Centering:** Removed `mb-[8vw]` on `#preloader-burger-stage` across all 4 HTML pages so the burger stack centers vertically (`burgerCy: 444px` on `1440x900`, `burgerCy: 394px` on `375x812`).
+- **Where We Left Off:** Verified in Playwright across `1440x900` (`burgerCx: 721, burgerCy: 444`) and `375x812` (`burgerCx: 188, burgerCy: 394–395` across `index.html` & `spices.html`) with `0` console errors.

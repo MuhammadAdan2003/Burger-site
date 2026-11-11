@@ -168,7 +168,7 @@
       <!-- Animated 6-Layer Burger Stack + 14 Bursting Confetti Dots -->
       <div
         id="preloader-burger-stage"
-        class="relative w-[46vw] h-[48vw] mb-[8vw] max-w-[205px] max-h-[215px] md:max-w-[265px] md:max-h-[280px] flex items-center justify-center z-20 origin-bottom"
+        class="relative w-[46vw] h-[48vw] max-w-[205px] max-h-[215px] md:max-w-[265px] md:max-h-[280px] flex items-center justify-center z-20 origin-bottom"
         aria-hidden="true"
       >
         <!-- 14 Radial Confetti Dots -->
@@ -194,7 +194,7 @@
 
         <!-- Layer 1: Bottom Bun -->
         <div
-          class="preloader-layer absolute left-1/2 -translate-x-1/2 w-full will-change-transform"
+          class="preloader-layer absolute left-0 w-full will-change-transform"
           data-label="TOASTING THE ARTISAN BUN..."
           data-rotate="0"
           style="bottom: 0%; aspect-ratio: 2002 / 712; z-index: 10; opacity: 0"
@@ -204,7 +204,7 @@
 
         <!-- Layer 2: Smashed Beef Patty -->
         <div
-          class="preloader-layer absolute left-1/2 -translate-x-1/2 w-full will-change-transform"
+          class="preloader-layer absolute left-0 w-full will-change-transform"
           data-label="SEARING THE GLAZED PATTY..."
           data-rotate="-2"
           style="bottom: 5%; aspect-ratio: 2019 / 842; z-index: 11; opacity: 0"
@@ -214,7 +214,7 @@
 
         <!-- Layer 3: Melted Cheddar Cheese -->
         <div
-          class="preloader-layer absolute left-1/2 -translate-x-1/2 w-full will-change-transform"
+          class="preloader-layer absolute left-0 w-full will-change-transform"
           data-label="MELTING CHEDDAR CHEESE..."
           data-rotate="1"
           style="bottom: 10%; aspect-ratio: 2079 / 931; z-index: 12; opacity: 0"
@@ -224,7 +224,7 @@
 
         <!-- Layer 4: Sun-Ripened Tomato Slice -->
         <div
-          class="preloader-layer absolute left-1/2 -translate-x-1/2 w-full will-change-transform"
+          class="preloader-layer absolute left-0 w-full will-change-transform"
           data-label="SLICING RIPE RED TOMATOES..."
           data-rotate="-4"
           style="bottom: 16%; aspect-ratio: 2040 / 901; z-index: 13; opacity: 0"
@@ -234,7 +234,7 @@
 
         <!-- Layer 5: Crispy Garden Lettuce -->
         <div
-          class="preloader-layer absolute left-1/2 -translate-x-1/2 w-full will-change-transform"
+          class="preloader-layer absolute left-0 w-full will-change-transform"
           data-label="ADDING CRISPY GARDEN LETTUCE..."
           data-rotate="3"
           style="bottom: 22%; aspect-ratio: 2144 / 761; z-index: 14; opacity: 0"
@@ -244,7 +244,7 @@
 
         <!-- Layer 6: Toasted Sesame Top Bun -->
         <div
-          class="preloader-layer absolute left-1/2 -translate-x-1/2 w-full will-change-transform"
+          class="preloader-layer absolute left-0 w-full will-change-transform"
           data-label="PREPARING TO SERVE THE SMSH MASTERPIECE!"
           data-rotate="0"
           style="bottom: 28%; aspect-ratio: 2006 / 1267; z-index: 15; opacity: 0"
@@ -437,7 +437,7 @@
               id="main-menu"
               role="menu"
               data-cursor-hide="true"
-              class="absolute top-[calc(100%+1vw)] right-0 w-[18vw] max-lg:w-[30vw] max-md:w-[91vw] bg-red rounded-[1.2vw] max-lg:rounded-[2vw] max-md:rounded-[4vw] p-[2vw] max-lg:p-[3.2vw] max-md:mt-[3vw] max-md:p-[6vw] shadow-[0_1vw_3vw_rgba(27,27,27,.25)]"
+              class="absolute top-[calc(100%+1vw)] right-0 w-[18vw] max-lg:w-[30vw] max-md:w-[91vw] max-md:max-h-[75dvh] max-md:overflow-y-auto bg-red rounded-[1.2vw] max-lg:rounded-[2vw] max-md:rounded-[4vw] p-[2vw] max-lg:p-[3.2vw] max-md:mt-[3vw] max-md:p-[6vw] shadow-[0_1vw_3vw_rgba(27,27,27,.25)]"
               style="
                 opacity: 0;
                 transform: scale(0.3);
@@ -449,49 +449,49 @@
                 <a
                   role="menuitem"
                   href="./index.html"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   Home
                 </a>
                 <a
                   role="menuitem"
                   href="./index.html#about"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   About
                 </a>
                 <a
                   role="menuitem"
                   href="./menu.html"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   Menu
                 </a>
                 <a
                   role="menuitem"
                   href="./index.html#flavors"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   Flavors
                 </a>
                 <a
                   role="menuitem"
                   href="./spices.html"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   Our Spices
                 </a>
                 <a
                   role="menuitem"
                   href="./index.html#map"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   Locations
                 </a>
                 <a
                   role="menuitem"
                   href="./contact.html"
-                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block origin-left"
+                  class="menu-item-link font-modak text-[2.15vw] max-lg:text-[3.4vw] max-md:text-[7.2vw] text-beige leading-[1.08] uppercase hover:text-mustard hover:scale-105 transition-colors duration-200 inline-block max-md:block max-md:w-full max-md:py-[1.4vw] origin-left"
                 >
                   Contact
                 </a>
@@ -589,12 +589,12 @@
     ></div>
     <div
       id="smsh-checkout-modal"
-      class="fixed inset-0 pointer-events-none z-999 grid place-items-center px-[4vw] opacity-0"
+      class="fixed inset-0 pointer-events-none z-999 hidden place-items-center px-[4vw] opacity-0"
       role="dialog"
       aria-modal="true"
       aria-labelledby="smsh-checkout-title"
     >
-      <div class="w-full max-w-[32vw] max-md:max-w-[92vw] rounded-[1.2vw] max-md:rounded-[5vw] shadow-[0_1vw_3vw_rgba(27,27,27,.25)] bg-red text-beige p-[2vw] max-md:p-[6vw] pointer-events-auto">
+      <div class="w-full max-w-[32vw] max-md:max-w-[92vw] rounded-[1.2vw] max-md:rounded-[5vw] shadow-[0_1vw_3vw_rgba(27,27,27,.25)] bg-red text-beige p-[2vw] max-md:p-[6vw]">
         <div class="flex items-start justify-between gap-[2vw]">
           <div class="space-y-[.4vw] max-md:space-y-[1.5vw]">
             <p class="font-mouse-memoirs uppercase tracking-[.2em] text-[.9vw] max-md:text-[3.5vw] text-beige/70">SMSH Kitchen</p>
@@ -711,14 +711,14 @@
           </div>
         </section>
         
-        <section id="cta" class="h-fit w-full pt-[18vw] max-md:pt-[12vw] overflow-clip relative bg-beige">
+        <section id="cta" class="h-fit w-full pt-[18vw] max-md:pt-[14vw] overflow-x-clip relative bg-beige">
           <div class="z-99 w-full absolute left-0 right-0 overflow-x-clip max-md:left-0 max-md:right-0 top-0">
             <svg data-jelly-svg="true" data-jelly-flip="false" class="jelly pointer-events-none block w-full max-w-[100vw] h-[300px] max-md:h-auto" width="100%" viewBox="0 0 1536 300" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
               <path data-jelly-path="true" d="M1536,0 H-1 V135 S184.32,65 460.8,155 S860.16,105 1121.28,137 S1413.12,105 1536,105 V0" fill="#F91814"></path>
             </svg>
           </div>
           <div class="h-screen my-[8vw] mt-0 flex items-center justify-center w-full relative max-md:my-[2vw] max-md:mt-0 max-md:h-fit max-md:flex-col max-md:gap-0 max-md:px-[2vw]">
-            <div class="sticker-wrapper absolute z-222 bottom-[1vw] max-md:bottom-[65vw] max-md:left-[2vw] max-md:!translate-x-0 -rotate-45 left-1/2 -translate-x-1/2 w-[35vw] h-auto max-md:w-[70vw] object-contain max-md:mb-[4vw]" style="--sticker-rotate: 30deg; --sticker-width: 100%; --peel-amount: 0.06">
+            <div class="sticker-wrapper absolute z-222 bottom-[1vw] max-md:top-[14vw] max-md:right-[3vw] max-md:bottom-auto max-md:left-auto max-md:!translate-x-0 max-md:rotate-12 -rotate-45 left-1/2 -translate-x-1/2 w-[35vw] h-auto max-md:w-[27vw] object-contain" style="--sticker-rotate: 30deg; --sticker-width: 100%; --peel-amount: 0.06">
               <div class="sticker-container">
                 <div class="sticker-main"><div class="sticker-lighting"><img src="./assets/img-webp/burger-boy.webp" alt="SMSH Burger Boy Sticker" class="sticker-image" draggable="false" /></div></div>
                 <div class="flap"><div class="flap-lighting"><img src="./assets/img-webp/burger-boy.webp" alt="" class="flap-image" draggable="false" /></div></div>
@@ -726,7 +726,7 @@
             </div>
             <div class="w-[60vw] flex items-start gap-[2vw] justify-center flex-col self h-full max-md:w-full max-md:gap-[4vw] max-md:items-center max-md:h-fit">
               <p class="text-red -rotate-7 ml-[.5vw] uppercase text-stroke-180 font-modak !leading-[.9] text60 max-md:rotate-0 max-md:ml-0 max-md:translate-y-0 max-md:text-center">FEEL IT</p>
-              <h2 class="text-red text-stroke-180 heading300 uppercase leading-[.75] max-md:!leading-[.85] max-md:text-[10vw] max-md:text-center">
+              <h2 class="text-red text-stroke-180 heading300 uppercase leading-[.75] max-md:!leading-[.85] max-md:text-[13vw] max-md:text-center">
                 <span class="sr-only">feel the Change</span>
                 <span aria-hidden="true">
                   <span data-pop="true" class="inline-block will-change-transform">feel</span><span> </span>
@@ -734,7 +734,7 @@
                   <span data-pop="true" class="inline-block will-change-transform">Change</span>
                 </span>
               </h2>
-              <p class="text40 w-[30vw] font-mouse-memoirs leading-[1.1] max-md:w-full max-md:text-[4vw] max-md:text-center" data-line-mask="true">
+              <p class="text40 w-[30vw] font-mouse-memoirs leading-[1.1] max-md:w-full max-md:text-[4.6vw] max-md:px-[3vw] max-md:text-center" data-line-mask="true">
                 Smashed for the bold, built for the hungry. Dive into a legendary craft experience where every crispy edge and juicy layer rules.
               </p>
               <div class="max-md:w-full max-md:flex max-md:justify-center">
@@ -756,7 +756,7 @@
         </main>
       <footer id="footer" class="h-fit w-full overflow-hidden self relative">
         <div
-          class="relative z-30 flex items-center justify-between gap-[2vw] pb-[1vw] max-md:flex-col max-md:items-center max-md:gap-[4vw] max-md:pb-[6vw]"
+          class="relative z-30 flex items-center justify-between gap-[2vw] pb-[1vw] max-md:flex-col max-md:items-center max-md:gap-[4vw] max-md:pb-[10vw]"
         >
           <nav
             class="flex flex-wrap items-center gap-x-[2vw] gap-y-[.6vw] max-md:gap-x-[5vw] max-md:gap-y-[2vw]"
@@ -764,7 +764,7 @@
           >
             <a
               href="./index.html"
-              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group"
+              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group max-md:py-2 max-md:px-1.5"
               aria-label="Home"
             >
               <span class="mask-overflow inline-block">
@@ -778,7 +778,7 @@
             </a>
             <a
               href="./menu.html"
-              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group"
+              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group max-md:py-2 max-md:px-1.5"
               aria-label="Burgers"
             >
               <span class="mask-overflow inline-block">
@@ -792,7 +792,7 @@
             </a>
             <a
               href="./spices.html"
-              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group"
+              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group max-md:py-2 max-md:px-1.5"
               aria-label="Spices"
             >
               <span class="mask-overflow inline-block">
@@ -806,7 +806,7 @@
             </a>
             <a
               href="./contact.html"
-              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group"
+              class="text40 uppercase font-mouse-memoirs hover:text-red transition-colors group max-md:py-2 max-md:px-1.5"
               aria-label="Contact"
             >
               <span class="mask-overflow inline-block">
